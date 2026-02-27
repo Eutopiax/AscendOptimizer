@@ -12,7 +12,7 @@
     .publication-links { margin-top: 20px; }
     .hero-body { padding-bottom: 2rem; }
     .section { padding-top: 2rem; }
-    .cite-tag { font-size: 0.75em; color: #888; vertical-align: super; }
+    .footnote-block { margin-right: 15px; color: #555; }
   </style>
 </head>
 <body>
@@ -20,21 +20,26 @@
 <section class="hero is-light">
   <div class="hero-body">
     <div class="container is-max-desktop has-text-centered">
-      <h1 class="title is-2 publication-title">AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization <span class="cite-tag"></span></h1>
+      <h1 class="title is-2 publication-title">AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization</h1>
       
       <div class="is-size-5 publication-authors mb-4">
-        <span class="author-block"><a href="#">Jiehao Wu</a>*<sup>1</sup>,</span>
-        <span class="author-block"><a href="#">Zixiao Huang</a>*<sup>1</sup>,</span>
+        <span class="author-block"><a href="#">Jiehao Wu</a><sup>1,*</sup>,</span>
+        <span class="author-block"><a href="#">Zixiao Huang</a><sup>1,*</sup>,</span>
         <span class="author-block"><a href="#">Wenhao Li</a><sup>2</sup>,</span>
-        <span class="author-block"><a href="#">Xiangfeng Wang</a><sup>1,3</sup>,</span>
-        <span class="author-block"><a href="#">Junjie Sheng</a><sup>4</sup> <span class="cite-tag">[cite: 2]</span></span>
+        <span class="author-block"><a href="#">Junjie Sheng</a><sup>1,&dagger;</sup>,</span>
+        <span class="author-block"><a href="#">Xiangfeng Wang</a><sup>3,4,&dagger;</sup></span>
       </div>
 
       <div class="is-size-6 publication-authors mb-4">
-        <span class="author-block"><sup>1</sup>East China Normal University <span class="cite-tag">[cite: 3]</span>,</span>
-        <span class="author-block"><sup>2</sup>Tongji University <span class="cite-tag">[cite: 5]</span>,</span><br>
-        <span class="author-block"><sup>3</sup>Key Laboratory of Mathematics and Engineering Applications, MoE <span class="cite-tag">[cite: 6]</span>,</span>
-        <span class="author-block"><sup>4</sup>Huawei Technologies Co., Ltd. <span class="cite-tag">[cite: 7]</span></span>
+        <span class="author-block"><sup>1</sup>School of Computer Science and Technology, East China Normal University</span><br>
+        <span class="author-block"><sup>2</sup>School of Computer Science and Technology, Tongji University</span><br>
+        <span class="author-block"><sup>3</sup>Key Laboratory of Mathematics and Engineering Applications, MoE</span><br>
+        <span class="author-block"><sup>4</sup>Shenzhen Loop Area Institute (SLAI)</span>
+      </div>
+
+      <div class="is-size-7 publication-authors mb-4">
+        <span class="footnote-block"><sup>*</sup>Equal contribution</span>
+        <span class="footnote-block"><sup>&dagger;</sup>Corresponding author</span>
       </div>
 
       <div class="publication-links">
@@ -44,7 +49,7 @@
         </a>
         <a href="https://anonymous.4open.science/r/AscendOptimizer-3022/" class="button is-dark is-rounded">
           <span class="icon"><i class="fab fa-github"></i></span>
-          <span>Code & Dataset <span class="cite-tag">[cite: 135]</span></span>
+          <span>Code & Dataset</span>
         </a>
       </div>
     </div>
@@ -56,10 +61,10 @@
     <h2 class="title is-3 has-text-centered">Abstract</h2>
     <div class="content has-text-justified">
       <p>
-        AscendC operator optimization on Huawei Ascend neural processing units (NPUs) faces a two-fold knowledge bottleneck: a lack of public reference implementations and the need to tightly couple host-side tiling with device-side kernel scheduling <span class="cite-tag">[cite: 10]</span>. 
+        [cite_start]AscendC operator optimization on Huawei Ascend neural processing units (NPUs) faces a two-fold knowledge bottleneck: unlike the CUDA ecosystem, there are few public reference implementations to learn from, and performance hinges on a coupled two-part artifact a host-side tiling program that orchestrates data movement and a kernel program that schedules and pipelines instructions[cite: 10].
       </p>
       <p>
-        We present <strong>AscendOptimizer</strong>, an episodic agent that bootstraps this missing expertise by turning execution into experience <span class="cite-tag">[cite: 11]</span>. On the host side, it performs profiling-in-the-loop evolutionary search to discover high-performing tiling configurations <span class="cite-tag">[cite: 12]</span>. On the kernel side, it mines transferable optimization motifs by rewinding optimized kernels to synthesize "bad-to-good" trajectories <span class="cite-tag">[cite: 13]</span>. On a benchmark of 133 real AscendC operators, AscendOptimizer achieves a 1.34x geometric-mean speedup over the open-source baseline, outperforming strong agent and search baselines <span class="cite-tag">[cite: 15]</span>.
+        [cite_start]We present <strong>AscendOptimizer</strong>, an episodic agent that bootstraps this missing expertise by turning execution into experience[cite: 11]. [cite_start]On the host side, AscendOptimizer performs profiling-in-the-loop evolutionary search to discover valid and high-performing tiling and data-movement configurations directly from hardware feedback[cite: 12]. [cite_start]On the kernel side, it mines transferable optimization motifs by rewinding optimized kernels systematically de-optimizing them to synthesize instructive "bad-to-good" trajectories and distills these motifs into a retrievable experience bank for guided rewriting[cite: 13]. [cite_start]On a benchmark of 133 real AscendC operators, AscendOptimizer achieves a 1.34x geometric-mean speedup over the open-source baseline, with 51.88% of operators outperforming their references, outperforming strong agent and search baselines[cite: 15].
       </p>
     </div>
   </div>
@@ -67,16 +72,16 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Alternating Optimization Framework <span class="cite-tag">[cite: 132]</span></h2>
+    <h2 class="title is-3 has-text-centered">Alternating Optimization Framework</h2>
     <div class="content">
-      <p class="has-text-centered">AscendOptimizer optimizes the host-side tiling function and the device-side kernel code in two stages <span class="cite-tag">[cite: 149]</span>:</p>
+      [cite_start]<p class="has-text-centered">AscendOptimizer optimizes the host-side tiling function T and the device-side kernel code K in two stages[cite: 149]:</p>
       <ul>
-        <li><strong>Stage I: Evolutionary-Guided Program Search.</strong> Modeled as a program search problem, it leverages LLMs to perform evolutionary search, using hardware-in-the-loop execution feedback to implicitly learn hardware constraints <span class="cite-tag">[cite: 152]</span>.</li>
-        <li><strong>Stage II: Optimization-Rewind based Experience Bootstrapping.</strong> Constructs a structured optimization pattern library via deliberate de-optimization ("Optimization Rewind"), transforming infinite code search into finite expert experience retrieval and application <span class="cite-tag">[cite: 154]</span>.</li>
+        [cite_start]<li><strong>Stage I: Evolutionary-Guided Program Search.</strong> We model Tiling optimization as a program search problem, leveraging LLMs to perform evolutionary search within the function space, implicitly learning hardware constraints via Hardware-in-the-Loop (HIL) feedback[cite: 152].</li>
+        [cite_start]<li><strong>Stage II: Optimization-Rewind based Experience Bootstrapping.</strong> We construct a structured optimization pattern library via "Optimization Rewind" (deliberate de-optimization), transforming infinite code search into finite expert experience retrieval and application[cite: 154].</li>
       </ul>
       <figure class="image is-centered mt-5">
         <img src="https://via.placeholder.com/1000x400?text=Insert+Figure+1+Overview+of+AscendOptimizer" alt="AscendOptimizer Overview">
-        <figcaption class="has-text-centered is-size-7 mt-2"><em>Overview of AscendOptimizer alternating between evolutionary search and experience-guided rewriting <span class="cite-tag">[cite: 130, 131, 132]</span>.</em></figcaption>
+        <figcaption class="has-text-centered is-size-7 mt-2"><em>Overview of AscendOptimizer. [cite_start]Stage I performs evolutionary-guided program search with hardware-in-the-loop profiling feedback to discover valid high-performance configurations[cite: 130]; [cite_start]Stage II bootstraps optimization experience via optimization rewind and applies retrieval-augmented kernel optimization to address structural bottlenecks[cite: 131].</em></figcaption>
       </figure>
     </div>
   </div>
@@ -84,9 +89,9 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Main Performance (Ascend 910B4) <span class="cite-tag">[cite: 210]</span></h2>
+    <h2 class="title is-3 has-text-centered">Main Performance (Ascend 910B4)</h2>
     <div class="content">
-      <p class="has-text-centered">Comparison against search-based and Best-of-N baselines across 133 operators. AscendOptimizer reaches a Geometric Mean (GM) speedup of 1.34x <span class="cite-tag">[cite: 244, 245]</span>.</p>
+      [cite_start]<p class="has-text-centered">AscendOptimizer outperforms all baselines across every metric, reaching a GM of 1.34[cite: 245].</p>
       <table class="table is-striped is-hoverable is-fullwidth">
         <thead>
           <tr>
@@ -125,7 +130,7 @@
           </tr>
         </tbody>
       </table>
-      <p class="is-size-7 has-text-right"><em>Data sourced from Table 3 <span class="cite-tag">[cite: 244]</span></em></p>
+      [cite_start]<p class="is-size-7 has-text-right"><em>Data sourced from Table 3 [cite: 239, 244]</em></p>
     </div>
   </div>
 </section>
@@ -135,7 +140,7 @@
     <h2 class="title is-3">BibTeX</h2>
     <pre><code>@article{wu2026ascendoptimizer,
   title={AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization},
-  author={Wu, Jiehao and Huang, Zixiao and Li, Wenhao and Wang, Xiangfeng and Sheng, Junjie},
+  author={Wu, Jiehao and Huang, Zixiao and Li, Wenhao and Sheng, Junjie and Wang, Xiangfeng},
   journal={arXiv preprint},
   year={2026}
 }</code></pre>
