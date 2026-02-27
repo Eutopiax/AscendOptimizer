@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM-Opt: Agent-Driven Operator Optimization</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* 微调学术风格的字体和间距 */
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .author-block { margin-right: 15px; font-size: 1.1rem; }
+    .publication-links { margin-top: 20px; }
+    .hero-body { padding-bottom: 2rem; }
+    .section { padding-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<section class="hero is-light">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h1 class="title is-2 publication-title">LLM-Opt: LLM Agent for Multi-Objective Scheduling & NPU Operator Optimization</h1>
+      
+      <div class="is-size-5 publication-authors mb-4">
+        <span class="author-block"><a href="#">First Author</a><sup>1</sup>,</span>
+        <span class="author-block"><a href="#">Second Author</a><sup>2</sup>,</span>
+        <span class="author-block"><a href="#">Third Author</a><sup>1</sup></span>
+      </div>
+
+      <div class="is-size-6 publication-authors mb-4">
+        <span class="author-block"><sup>1</sup>Your University,</span>
+        <span class="author-block"><sup>2</sup>Your Lab</span>
+      </div>
+
+      <div class="publication-links">
+        <a href="#" class="button is-dark is-rounded">
+          <span class="icon"><i class="fas fa-file-pdf"></i></span>
+          <span>Paper</span>
+        </a>
+        <a href="#" class="button is-dark is-rounded">
+          <span class="icon"><i class="fab fa-github"></i></span>
+          <span>Code</span>
+        </a>
+        <a href="#" class="button is-dark is-rounded">
+          <span class="icon"><i class="fas fa-database"></i></span>
+          <span>Operator Dataset (133 OPs)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Abstract</h2>
+    <div class="content has-text-justified">
+      <p>
+        In this paper, we introduce a dual-stage optimization framework driven by Large Language Models (LLMs) to automatically discover and optimize compute operators for the Ascend NPU architecture. Inspired by search-based programming, our agent interacts with the CANN compiler compiler feedback to iteratively refine Ascend C code. We demonstrate significant performance improvements across a comprehensive benchmark of 133 distinct operators.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">The Agent Interaction Loop</h2>
+    <div class="content has-text-centered">
+      <img src="https://via.placeholder.com/800x400?text=Your+LLM+Agent+Pipeline+Diagram+Here" alt="Agent Pipeline">
+      <p class="is-size-6 mt-3">
+        <em>Figure 1: The FunSearch-inspired agent loop. The LLM generates candidate Ascend C implementations, which are evaluated by the hardware simulator. The performance metrics and compilation errors are fed back to the LLM as context for the next iteration.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Operator Performance (Ascend 910B4)</h2>
+    <div class="content">
+      <p>Average acceleration ratio compared to default CANN 8.0 implementations across different operator categories.</p>
+      <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>Operator Category</th>
+            <th>Count</th>
+            <th>Default Latency (ms)</th>
+            <th>Ours (ms)</th>
+            <th>Acceleration Ratio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Attention Variants</td>
+            <td>15</td>
+            <td>12.4</td>
+            <td><strong>8.1</strong></td>
+            <td>1.53x</td>
+          </tr>
+          <tr>
+            <td>Activation Functions</td>
+            <td>45</td>
+            <td>2.1</td>
+            <td><strong>1.8</strong></td>
+            <td>1.16x</td>
+          </tr>
+          <tr>
+            <td>Reduction Ops</td>
+            <td>30</td>
+            <td>5.6</td>
+            <td><strong>4.2</strong></td>
+            <td>1.33x</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">BibTeX</h2>
+    <pre><code>@article{yourname2026llmopt,
+  title={LLM-Opt: LLM Agent for Multi-Objective Scheduling & NPU Operator Optimization},
+  author={Author, First and Author, Second},
+  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  year={2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer mt-6">
+  <div class="content has-text-centered">
+    <p>
+      Website template inspired by <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and InterCode.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
