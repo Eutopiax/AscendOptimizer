@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LLM-Opt: Agent-Driven Operator Optimization</title>
+  <title>AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* 微调学术风格的字体和间距 */
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .author-block { margin-right: 15px; font-size: 1.1rem; }
     .publication-links { margin-top: 20px; }
     .hero-body { padding-bottom: 2rem; }
     .section { padding-top: 2rem; }
+    .cite-tag { font-size: 0.75em; color: #888; vertical-align: super; }
   </style>
 </head>
 <body>
@@ -20,17 +20,21 @@
 <section class="hero is-light">
   <div class="hero-body">
     <div class="container is-max-desktop has-text-centered">
-      <h1 class="title is-2 publication-title">LLM-Opt: LLM Agent for Multi-Objective Scheduling & NPU Operator Optimization</h1>
+      <h1 class="title is-2 publication-title">AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization <span class="cite-tag"></span></h1>
       
       <div class="is-size-5 publication-authors mb-4">
-        <span class="author-block"><a href="#">First Author</a><sup>1</sup>,</span>
-        <span class="author-block"><a href="#">Second Author</a><sup>2</sup>,</span>
-        <span class="author-block"><a href="#">Third Author</a><sup>1</sup></span>
+        <span class="author-block"><a href="#">Jiehao Wu</a>*<sup>1</sup>,</span>
+        <span class="author-block"><a href="#">Zixiao Huang</a>*<sup>1</sup>,</span>
+        <span class="author-block"><a href="#">Wenhao Li</a><sup>2</sup>,</span>
+        <span class="author-block"><a href="#">Xiangfeng Wang</a><sup>1,3</sup>,</span>
+        <span class="author-block"><a href="#">Junjie Sheng</a><sup>4</sup> <span class="cite-tag">[cite: 2]</span></span>
       </div>
 
       <div class="is-size-6 publication-authors mb-4">
-        <span class="author-block"><sup>1</sup>Your University,</span>
-        <span class="author-block"><sup>2</sup>Your Lab</span>
+        <span class="author-block"><sup>1</sup>East China Normal University <span class="cite-tag">[cite: 3]</span>,</span>
+        <span class="author-block"><sup>2</sup>Tongji University <span class="cite-tag">[cite: 5]</span>,</span><br>
+        <span class="author-block"><sup>3</sup>Key Laboratory of Mathematics and Engineering Applications, MoE <span class="cite-tag">[cite: 6]</span>,</span>
+        <span class="author-block"><sup>4</sup>Huawei Technologies Co., Ltd. <span class="cite-tag">[cite: 7]</span></span>
       </div>
 
       <div class="publication-links">
@@ -38,13 +42,9 @@
           <span class="icon"><i class="fas fa-file-pdf"></i></span>
           <span>Paper</span>
         </a>
-        <a href="#" class="button is-dark is-rounded">
+        <a href="https://anonymous.4open.science/r/AscendOptimizer-3022/" class="button is-dark is-rounded">
           <span class="icon"><i class="fab fa-github"></i></span>
-          <span>Code</span>
-        </a>
-        <a href="#" class="button is-dark is-rounded">
-          <span class="icon"><i class="fas fa-database"></i></span>
-          <span>Operator Dataset (133 OPs)</span>
+          <span>Code & Dataset <span class="cite-tag">[cite: 135]</span></span>
         </a>
       </div>
     </div>
@@ -56,7 +56,10 @@
     <h2 class="title is-3 has-text-centered">Abstract</h2>
     <div class="content has-text-justified">
       <p>
-        In this paper, we introduce a dual-stage optimization framework driven by Large Language Models (LLMs) to automatically discover and optimize compute operators for the Ascend NPU architecture. Inspired by search-based programming, our agent interacts with the CANN compiler compiler feedback to iteratively refine Ascend C code. We demonstrate significant performance improvements across a comprehensive benchmark of 133 distinct operators.
+        AscendC operator optimization on Huawei Ascend neural processing units (NPUs) faces a two-fold knowledge bottleneck: a lack of public reference implementations and the need to tightly couple host-side tiling with device-side kernel scheduling <span class="cite-tag">[cite: 10]</span>. 
+      </p>
+      <p>
+        We present <strong>AscendOptimizer</strong>, an episodic agent that bootstraps this missing expertise by turning execution into experience <span class="cite-tag">[cite: 11]</span>. On the host side, it performs profiling-in-the-loop evolutionary search to discover high-performing tiling configurations <span class="cite-tag">[cite: 12]</span>. On the kernel side, it mines transferable optimization motifs by rewinding optimized kernels to synthesize "bad-to-good" trajectories <span class="cite-tag">[cite: 13]</span>. On a benchmark of 133 real AscendC operators, AscendOptimizer achieves a 1.34x geometric-mean speedup over the open-source baseline, outperforming strong agent and search baselines <span class="cite-tag">[cite: 15]</span>.
       </p>
     </div>
   </div>
@@ -64,55 +67,65 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">The Agent Interaction Loop</h2>
-    <div class="content has-text-centered">
-      <img src="https://via.placeholder.com/800x400?text=Your+LLM+Agent+Pipeline+Diagram+Here" alt="Agent Pipeline">
-      <p class="is-size-6 mt-3">
-        <em>Figure 1: The FunSearch-inspired agent loop. The LLM generates candidate Ascend C implementations, which are evaluated by the hardware simulator. The performance metrics and compilation errors are fed back to the LLM as context for the next iteration.</em>
-      </p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Operator Performance (Ascend 910B4)</h2>
+    <h2 class="title is-3 has-text-centered">Alternating Optimization Framework <span class="cite-tag">[cite: 132]</span></h2>
     <div class="content">
-      <p>Average acceleration ratio compared to default CANN 8.0 implementations across different operator categories.</p>
+      <p class="has-text-centered">AscendOptimizer optimizes the host-side tiling function and the device-side kernel code in two stages <span class="cite-tag">[cite: 149]</span>:</p>
+      <ul>
+        <li><strong>Stage I: Evolutionary-Guided Program Search.</strong> Modeled as a program search problem, it leverages LLMs to perform evolutionary search, using hardware-in-the-loop execution feedback to implicitly learn hardware constraints <span class="cite-tag">[cite: 152]</span>.</li>
+        <li><strong>Stage II: Optimization-Rewind based Experience Bootstrapping.</strong> Constructs a structured optimization pattern library via deliberate de-optimization ("Optimization Rewind"), transforming infinite code search into finite expert experience retrieval and application <span class="cite-tag">[cite: 154]</span>.</li>
+      </ul>
+      <figure class="image is-centered mt-5">
+        <img src="https://via.placeholder.com/1000x400?text=Insert+Figure+1+Overview+of+AscendOptimizer" alt="AscendOptimizer Overview">
+        <figcaption class="has-text-centered is-size-7 mt-2"><em>Overview of AscendOptimizer alternating between evolutionary search and experience-guided rewriting <span class="cite-tag">[cite: 130, 131, 132]</span>.</em></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Main Performance (Ascend 910B4) <span class="cite-tag">[cite: 210]</span></h2>
+    <div class="content">
+      <p class="has-text-centered">Comparison against search-based and Best-of-N baselines across 133 operators. AscendOptimizer reaches a Geometric Mean (GM) speedup of 1.34x <span class="cite-tag">[cite: 244, 245]</span>.</p>
       <table class="table is-striped is-hoverable is-fullwidth">
         <thead>
           <tr>
-            <th>Operator Category</th>
-            <th>Count</th>
-            <th>Default Latency (ms)</th>
-            <th>Ours (ms)</th>
-            <th>Acceleration Ratio</th>
+            <th>Category</th>
+            <th>Method</th>
+            <th>GM &uarr;</th>
+            <th>fast 1.0 &uarr;</th>
+            <th>fast 1.2 &uarr;</th>
+            <th>fast 2.0 &uarr;</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Attention Variants</td>
-            <td>15</td>
-            <td>12.4</td>
-            <td><strong>8.1</strong></td>
-            <td>1.53x</td>
+            <td>Best-of-N</td>
+            <td>BoN@40</td>
+            <td>1.05</td>
+            <td>18.05%</td>
+            <td>6.77%</td>
+            <td>1.50%</td>
           </tr>
           <tr>
-            <td>Activation Functions</td>
-            <td>45</td>
-            <td>2.1</td>
-            <td><strong>1.8</strong></td>
-            <td>1.16x</td>
+            <td>Agent/Search</td>
+            <td>OpenEvolve</td>
+            <td>1.10</td>
+            <td>27.07%</td>
+            <td>7.52%</td>
+            <td>4.51%</td>
           </tr>
-          <tr>
-            <td>Reduction Ops</td>
-            <td>30</td>
-            <td>5.6</td>
-            <td><strong>4.2</strong></td>
-            <td>1.33x</td>
+          <tr class="is-selected">
+            <td><strong>Ours</strong></td>
+            <td><strong>AscendOptimizer</strong></td>
+            <td><strong>1.34</strong></td>
+            <td><strong>51.88%</strong></td>
+            <td><strong>19.55%</strong></td>
+            <td><strong>12.03%</strong></td>
           </tr>
         </tbody>
       </table>
+      <p class="is-size-7 has-text-right"><em>Data sourced from Table 3 <span class="cite-tag">[cite: 244]</span></em></p>
     </div>
   </div>
 </section>
@@ -120,10 +133,10 @@
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3">BibTeX</h2>
-    <pre><code>@article{yourname2026llmopt,
-  title={LLM-Opt: LLM Agent for Multi-Objective Scheduling & NPU Operator Optimization},
-  author={Author, First and Author, Second},
-  journal={arXiv preprint arXiv:XXXX.XXXXX},
+    <pre><code>@article{wu2026ascendoptimizer,
+  title={AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization},
+  author={Wu, Jiehao and Huang, Zixiao and Li, Wenhao and Wang, Xiangfeng and Sheng, Junjie},
+  journal={arXiv preprint},
   year={2026}
 }</code></pre>
   </div>
@@ -132,7 +145,7 @@
 <footer class="footer mt-6">
   <div class="content has-text-centered">
     <p>
-      Website template inspired by <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and InterCode.
+      Website layout inspired by InterCode and Nerfies.
     </p>
   </div>
 </footer>
