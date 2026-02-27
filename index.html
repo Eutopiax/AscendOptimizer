@@ -1,386 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AscendOptimizer</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: #333;
-      line-height: 1.6;
-    }
-    
-    /* Navigation */
-    nav {
-      background: #222;
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 50px;
-    }
-    
-    nav .brand {
-      color: white;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-decoration: none;
-    }
-    
-    nav .brand:hover {
-      color: #3273dc;
-    }
-    
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-    }
-    
-    nav a {
-      color: #aaa;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s;
-    }
-    
-    nav a:hover {
-      color: white;
-    }
-    
-    /* Main container */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    
-    /* Sections */
-    section {
-      padding: 20px 0;
-    }
-    
-    section + section {
-      border-top: 1px solid #eee;
-    }
-    
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin: 20px 0 10px;
-    }
-    
-    h2 {
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin: 30px 0 15px;
-      color: #222;
-    }
-    
-    h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin: 20px 0 10px;
-    }
-    
-    /* Authors */
-    .authors {
-      font-size: 1rem;
-      color: #555;
-      margin-bottom: 0.5rem;
-    }
-    
-    .authors a {
-      color: #3273dc;
-      text-decoration: none;
-    }
-    
-    .authors a:hover {
-      text-decoration: underline;
-    }
-    
-    .affiliation {
-      font-size: 0.85rem;
-      color: #666;
-      margin-bottom: 15px;
-    }
-    
-    /* Buttons */
-    .btn-row {
-      margin: 15px 0;
-    }
-    
-    .btn {
-      display: inline-block;
-      padding: 8px 16px;
-      margin-right: 8px;
-      margin-bottom: 8px;
-      background: #3273dc;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-      font-size: 0.9rem;
-    }
-    
-    .btn:hover {
-      background: #205bbc;
-      color: white;
-    }
-    
-    .btn-gray {
-      background: #666;
-    }
-    
-    .btn-gray:hover {
-      background: #444;
-    }
-    
-    /* Content */
-    p {
-      margin: 10px 0;
-    }
-    
-    ul {
-      margin: 10px 0 10px 20px;
-    }
-    
-    li {
-      margin-bottom: 5px;
-    }
-    
-    img {
-      max-width: 100%;
-      border-radius: 4px;
-      margin: 15px 0;
-    }
-    
-    /* Table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 15px 0;
-    }
-    
-    th, td {
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-    
-    th {
-      background: #f9f9f9;
-      font-weight: 600;
-    }
-    
-    tr:hover {
-      background: #fafafa;
-    }
-    
-    tr.selected {
-      background: rgba(50, 115, 220, 0.1);
-    }
-    
-    /* Code */
-    pre {
-      background: #282c34;
-      color: #abb2bf;
-      padding: 15px;
-      border-radius: 4px;
-      overflow-x: auto;
-      font-size: 0.85rem;
-      margin: 15px 0;
-    }
-    
-    /* Stats */
-    .stats {
-      display: flex;
-      gap: 30px;
-      margin: 15px 0;
-      flex-wrap: wrap;
-    }
-    
-    .stat {
-      text-align: center;
-    }
-    
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #3273dc;
-    }
-    
-    .stat-label {
-      font-size: 0.8rem;
-      color: #666;
-    }
-    
-    /* Footer */
-    footer {
-      margin-top: 40px;
-      padding: 30px 0;
-      text-align: center;
-      color: #666;
-      font-size: 0.85rem;
-      border-top: 1px solid #eee;
-    }
-    
-    /* News */
-    .news-date {
-      color: #888;
-      font-size: 0.85rem;
-    }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .author-block { margin-right: 15px; font-size: 1.1rem; }
+    .publication-links { margin-top: 20px; }
+    .hero-body { padding-bottom: 2rem; }
+    .section { padding-top: 2rem; }
+    .footnote-block { margin-right: 15px; color: #555; }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="#" class="brand"><i class="fas fa-microchip"></i> AscendOptimizer</a>
-  <ul>
-    <li><a href="#abstract">Abstract</a></li>
-    <li><a href="#framework">Framework</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#cite">Cite</a></li>
-  </ul>
-</nav>
-
-<div class="container">
-  <h1>AscendOptimizer</h1>
-  <h3>Episodic Agent for Ascend NPU Operator Optimization</h3>
-  
-  <p class="authors">
-    <a href="#">Jiehao Wu</a><sup>1,*</sup>, 
-    <a href="#">Zixiao Huang</a><sup>1,*</sup>, 
-    <a href="#">Wenhao Li</a><sup>2</sup>, 
-    <a href="#">Junjie Sheng</a><sup>1,†</sup>, 
-    <a href="#">Xiangfeng Wang</a><sup>3,4,†</sup>
-  </p>
-  
-  <p class="affiliation">
-    <sup>1</sup>East China Normal University · 
-    <sup>2</sup>Tongji University · 
-    <sup>3</sup>Key Laboratory of Math & Engineering Applications, MoE · 
-    <sup>4</sup>Shenzhen Loop Area Institute
-  </p>
-  
-  <div class="btn-row">
-    <a href="#" class="btn"><i class="fas fa-file-pdf"></i> Paper</a>
-    <a href="https://anonymous.4open.science/r/AscendOptimizer-3022/" class="btn"><i class="fab fa-github"></i> Code</a>
-    <a href="#" class="btn btn-gray"><i class="fas fa-database"></i> Dataset</a>
-  </div>
-
-  <section id="news">
-    <h2>News</h2>
-    <ul>
-      <li><span class="news-date">01.2026</span> — AscendOptimizer released</li>
-    </ul>
-  </section>
-
-  <section id="abstract">
-    <h2>What is AscendOptimizer?</h2>
-    <p>
-      AscendC operator optimization on Huawei Ascend NPUs faces a two-fold knowledge bottleneck: unlike the CUDA ecosystem, there are few public reference implementations, and performance depends on a coupled two-part artifact—a host-side tiling program and a kernel program.
-    </p>
-    <p>
-      We present <strong>AscendOptimizer</strong>, an episodic agent that bootstraps expertise by turning execution into experience. On the host side, it performs profiling-in-the-loop evolutionary search to discover valid and high-performing tiling configurations. On the kernel side, it mines transferable motifs by <em>rewinding</em> optimized kernels—systematically de-optimizing them to synthesize instructive "bad-to-good" trajectories—and distills these into a retrievable experience bank.
-    </p>
-    <p>
-      On 133 AscendC operators, AscendOptimizer achieves <strong>1.34× GM speedup</strong> over baseline, with <strong>51.88%</strong> outperforming references.
-    </p>
-  </section>
-
-  <section id="framework">
-    <h2>Framework</h2>
-    <img src="https://raw.githubusercontent.com/Eutopiax/AscendOptimizer/main/ao_framework.png" alt="Framework Overview">
-  </section>
-
-  <section id="results">
-    <h2>Main Results</h2>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-value">1.34×</div>
-        <div class="stat-label">GM Speedup</div>
+<section class="hero is-light">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h1 class="title is-2 publication-title">AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization</h1>
+      
+      <div class="is-size-5 publication-authors mb-4">
+        <span class="author-block"><a href="#">Jiehao Wu</a><sup>1,*</sup>,</span>
+        <span class="author-block"><a href="#">Zixiao Huang</a><sup>1,*</sup>,</span>
+        <span class="author-block"><a href="#">Wenhao Li</a><sup>2</sup>,</span>
+        <span class="author-block"><a href="#">Junjie Sheng</a><sup>1,&dagger;</sup>,</span>
+        <span class="author-block"><a href="#">Xiangfeng Wang</a><sup>3,4,&dagger;</sup></span>
       </div>
-      <div class="stat">
-        <div class="stat-value">51.88%</div>
-        <div class="stat-label">fast ≥ 1.0×</div>
+
+      <div class="is-size-6 publication-authors mb-4">
+        <span class="author-block"><sup>1</sup>School of Computer Science and Technology, East China Normal University</span><br>
+        <span class="author-block"><sup>2</sup>School of Computer Science and Technology, Tongji University</span><br>
+        <span class="author-block"><sup>3</sup>Key Laboratory of Mathematics and Engineering Applications, MoE</span><br>
+        <span class="author-block"><sup>4</sup>Shenzhen Loop Area Institute (SLAI)</span>
       </div>
-      <div class="stat">
-        <div class="stat-value">19.55%</div>
-        <div class="stat-label">fast ≥ 1.2×</div>
+
+      <div class="is-size-7 publication-authors mb-4">
+        <span class="footnote-block"><sup>*</sup>Equal contribution</span>
+        <span class="footnote-block"><sup>&dagger;</sup>Corresponding author</span>
       </div>
-      <div class="stat">
-        <div class="stat-value">12.03%</div>
-        <div class="stat-label">fast ≥ 2.0×</div>
+
+      <div class="publication-links">
+        <a href="#" class="button is-dark is-rounded">
+          <span class="icon"><i class="fas fa-file-pdf"></i></span>
+          <span>Paper</span>
+        </a>
+        <a href="https://anonymous.4open.science/r/AscendOptimizer-3022/" class="button is-dark is-rounded">
+          <span class="icon"><i class="fab fa-github"></i></span>
+          <span>Code & Dataset</span>
+        </a>
       </div>
     </div>
+  </div>
+</section>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Method</th>
-          <th>GM ↑</th>
-          <th>fast 1.0 ↑</th>
-          <th>fast 1.2 ↑</th>
-          <th>fast 2.0 ↑</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Best-of-N</td>
-          <td>BoN@40</td>
-          <td>1.05</td>
-          <td>18.05%</td>
-          <td>6.77%</td>
-          <td>1.50%</td>
-        </tr>
-        <tr>
-          <td>Agent/Search</td>
-          <td>OpenEvolve</td>
-          <td>1.10</td>
-          <td>27.07%</td>
-          <td>7.52%</td>
-          <td>4.51%</td>
-        </tr>
-        <tr class="selected">
-          <td><strong>Ours</strong></td>
-          <td><strong>AscendOptimizer</strong></td>
-          <td><strong>1.34</strong></td>
-          <td><strong>51.88%</strong></td>
-          <td><strong>19.55%</strong></td>
-          <td><strong>12.03%</strong></td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Abstract</h2>
+    <div class="content has-text-justified">
+      <p>
+        [cite_start]AscendC operator optimization on Huawei Ascend neural processing units (NPUs) faces a two-fold knowledge bottleneck: unlike the CUDA ecosystem, there are few public reference implementations to learn from, and performance hinges on a coupled two-part artifact a host-side tiling program that orchestrates data movement and a kernel program that schedules and pipelines instructions[cite: 10].
+      </p>
+      <p>
+        [cite_start]We present <strong>AscendOptimizer</strong>, an episodic agent that bootstraps this missing expertise by turning execution into experience[cite: 11]. [cite_start]On the host side, AscendOptimizer performs profiling-in-the-loop evolutionary search to discover valid and high-performing tiling and data-movement configurations directly from hardware feedback[cite: 12]. [cite_start]On the kernel side, it mines transferable optimization motifs by rewinding optimized kernels systematically de-optimizing them to synthesize instructive "bad-to-good" trajectories and distills these motifs into a retrievable experience bank for guided rewriting[cite: 13]. [cite_start]On a benchmark of 133 real AscendC operators, AscendOptimizer achieves a 1.34x geometric-mean speedup over the open-source baseline, with 51.88% of operators outperforming their references, outperforming strong agent and search baselines[cite: 15].
+      </p>
+    </div>
+  </div>
+</section>
 
-  <section id="cite">
-    <h2>Citing</h2>
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Alternating Optimization Framework</h2>
+    <div class="content">
+      [cite_start]<p class="has-text-centered">AscendOptimizer optimizes the host-side tiling function T and the device-side kernel code K in two stages[cite: 149]:</p>
+      <ul>
+        [cite_start]<li><strong>Stage I: Evolutionary-Guided Program Search.</strong> We model Tiling optimization as a program search problem, leveraging LLMs to perform evolutionary search within the function space, implicitly learning hardware constraints via Hardware-in-the-Loop (HIL) feedback[cite: 152].</li>
+        [cite_start]<li><strong>Stage II: Optimization-Rewind based Experience Bootstrapping.</strong> We construct a structured optimization pattern library via "Optimization Rewind" (deliberate de-optimization), transforming infinite code search into finite expert experience retrieval and application[cite: 154].</li>
+      </ul>
+      <figure class="image is-centered mt-5">
+        <a href="https://github.com/Eutopiax/AscendOptimizer/blob/main/framework-3.pdf" target="_blank">
+          <img src="https://raw.githubusercontent.com/Eutopiax/AscendOptimizer/main/ao_framework.png" alt="AscendOptimizer Framework" style="max-width: 100%; height: auto;">
+        </a>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Main Performance (Ascend 910B4)</h2>
+    <div class="content">
+      [cite_start]<p class="has-text-centered">AscendOptimizer outperforms all baselines across every metric, reaching a GM of 1.34[cite: 245].</p>
+      <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Method</th>
+            <th>GM &uarr;</th>
+            <th>fast 1.0 &uarr;</th>
+            <th>fast 1.2 &uarr;</th>
+            <th>fast 2.0 &uarr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Best-of-N</td>
+            <td>BoN@40</td>
+            <td>1.05</td>
+            <td>18.05%</td>
+            <td>6.77%</td>
+            <td>1.50%</td>
+          </tr>
+          <tr>
+            <td>Agent/Search</td>
+            <td>OpenEvolve</td>
+            <td>1.10</td>
+            <td>27.07%</td>
+            <td>7.52%</td>
+            <td>4.51%</td>
+          </tr>
+          <tr class="is-selected">
+            <td><strong>Ours</strong></td>
+            <td><strong>AscendOptimizer</strong></td>
+            <td><strong>1.34</strong></td>
+            <td><strong>51.88%</strong></td>
+            <td><strong>19.55%</strong></td>
+            <td><strong>12.03%</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      [cite_start]<p class="is-size-7 has-text-right"><em>Data sourced from Table 3 [cite: 239, 244]</em></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">BibTeX</h2>
     <pre><code>@article{wu2026ascendoptimizer,
   title={AscendOptimizer: Episodic Agent for Ascend NPU Operator Optimization},
   author={Wu, Jiehao and Huang, Zixiao and Li, Wenhao and Sheng, Junjie and Wang, Xiangfeng},
   journal={arXiv preprint},
   year={2026}
 }</code></pre>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <h2>Acknowledgements</h2>
-    <p>We would like to thank the anonymous reviewers for their valuable feedback.</p>
-  </section>
-
-</div>
-
-<footer>
-  <p>Website layout inspired by <a href="https://intercode-benchmark.github.io/" target="_blank">InterCode</a></p>
+<footer class="footer mt-6">
+  <div class="content has-text-centered">
+    <p>
+      Website layout inspired by InterCode and Nerfies.
+    </p>
+  </div>
 </footer>
 
 </body>
