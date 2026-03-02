@@ -154,6 +154,31 @@
     .mini-table td {
       font-size: 0.88rem;
     }
+
+    .family-picker {
+      max-width: 420px;
+      margin: 0.75rem 0 1rem;
+    }
+
+    .operator-panel {
+      border: 1px solid #e3e7eb;
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      background: #fafbfd;
+    }
+
+    .operator-list {
+      margin: 0.5rem 0 0;
+      padding-left: 1.1rem;
+      columns: 2;
+      column-gap: 1.5rem;
+    }
+
+    .operator-list li {
+      break-inside: avoid;
+      margin-bottom: 0.25rem;
+      font-size: 0.92rem;
+    }
     
     .keywords {
       display: flex;
@@ -371,28 +396,19 @@
       <p class="has-text-grey is-size-7 mt-3">
         <em>GM: geometric-mean speedup. fast X.X: percentage of operators achieving X.X× speedup over baseline.</em>
       </p>
-    </div>
-  </div>
-</section>
 
-<!-- Operator Classification Section -->
-<section class="section">
-  <div class="container">
-    <h2 class="section-title">Operator Classification</h2>
-    <div class="content">
-      <p>
-        The listed operators are grouped by semantic family to show structural distribution without speedup-tier partitioning.
+      <hr>
+      <h4>Operator Classification (Selectable)</h4>
+      <p class="mb-2">
+        Select one operator family to inspect its members.
       </p>
-      <table class="table is-fullwidth is-striped is-narrow mini-table">
-        <thead>
-          <tr>
-            <th>Family</th>
-            <th class="has-text-centered">Count</th>
-            <th>Operators</th>
-          </tr>
-        </thead>
-        <tbody id="family-table-body"></tbody>
-      </table>
+      <div class="select is-fullwidth family-picker">
+        <select id="family-select"></select>
+      </div>
+      <div class="operator-panel">
+        <p id="family-summary" class="has-text-weight-semibold"></p>
+        <ul id="operator-list" class="operator-list"></ul>
+      </div>
     </div>
   </div>
 </section>
@@ -450,30 +466,40 @@
     return "Others";
   }
 
-  function renderFamilyTable() {
+  function buildFamilyMap() {
     const familyMap = {};
     operators.forEach((name) => {
       const family = familyOf(name);
       if (!familyMap[family]) familyMap[family] = [];
       familyMap[family].push(name);
     });
-
-    const rows = Object.entries(familyMap)
-      .sort((a, b) => b[1].length - a[1].length)
-      .map(([family, names]) => {
-        const orderedNames = names.slice().sort((a, b) => a.localeCompare(b));
-        return `<tr>
-          <td>${family}</td>
-          <td class="has-text-centered">${orderedNames.length}</td>
-          <td>${orderedNames.join(", ")}</td>
-        </tr>`;
-      })
-      .join("");
-
-    document.getElementById("family-table-body").innerHTML = rows;
+    Object.values(familyMap).forEach((names) => names.sort((a, b) => a.localeCompare(b)));
+    return familyMap;
   }
 
-  renderFamilyTable();
+  function renderFamilySelector() {
+    const familyMap = buildFamilyMap();
+    const families = Object.entries(familyMap).sort((a, b) => b[1].length - a[1].length);
+    const select = document.getElementById("family-select");
+    const summary = document.getElementById("family-summary");
+    const list = document.getElementById("operator-list");
+
+    select.innerHTML = families
+      .map(([family, names]) => `<option value="${family}">${family} (${names.length})</option>`)
+      .join("");
+
+    function renderSelectedFamily() {
+      const selected = select.value;
+      const names = familyMap[selected] || [];
+      summary.textContent = `${selected}: ${names.length} operators`;
+      list.innerHTML = names.map((name) => `<li>${name}</li>`).join("");
+    }
+
+    select.addEventListener("change", renderSelectedFamily);
+    renderSelectedFamily();
+  }
+
+  renderFamilySelector();
 </script>
 
 </body>
