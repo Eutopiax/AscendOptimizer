@@ -144,6 +144,16 @@
       color: var(--accent-color);
       font-weight: 700;
     }
+
+    .mini-table th {
+      background: #eef2f7 !important;
+      color: #2f3f50 !important;
+      font-size: 0.85rem;
+    }
+
+    .mini-table td {
+      font-size: 0.88rem;
+    }
     
     .keywords {
       display: flex;
@@ -365,6 +375,28 @@
   </div>
 </section>
 
+<!-- Operator Classification Section -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Operator Classification</h2>
+    <div class="content">
+      <p>
+        The listed operators are grouped by semantic family to show structural distribution without speedup-tier partitioning.
+      </p>
+      <table class="table is-fullwidth is-striped is-narrow mini-table">
+        <thead>
+          <tr>
+            <th>Family</th>
+            <th class="has-text-centered">Count</th>
+            <th>Operators</th>
+          </tr>
+        </thead>
+        <tbody id="family-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- Citation Section -->
 <section class="section">
   <div class="container">
@@ -393,6 +425,56 @@
     </p>
   </div>
 </footer>
+
+<script>
+  const operators = [
+    "mse_loss_grad_v2", "scatter_reduce", "foreach_zero_inplace", "matmul_reduce_scatter", "moc_init_routing_v2",
+    "non_finite_check", "motion_compensation", "dawn", "cross", "strideslice_neg_concat_v2", "foreach_sub_scalar",
+    "mse_loss_grad_v1", "scatter_list", "bev_pool", "foreach_pow_scalar_and_", "foreach_addcmul_scalar", "trunc",
+    "rms_norm_grad", "eye_fp64", "cross_entropy_loss", "upsample_bilinear2d_aa", "add_layer_norm_grad", "group_norm_swish",
+    "upsample_bilinear2d_aa_", "foreach_erfc", "upsample_bicubic2d_aa_", "circular_pad", "tril", "add_sigmoid_mul_reduce",
+    "upsample_bilinear2d_gra", "flash_attention_score_wi", "arange", "upsample_nearest_exact3", "upsample_trilinear3d_ba",
+    "add_rms_norm_dynamic_", "foreach_cos", "foreach_tan", "mul_sigmoid", "complex_mat_dot", "lin_space", "matmul_all_reduce",
+    "kl_div_target_backward", "adaptive_avg_pool3d_atg", "foreach_pow_scalar", "greater_equal", "copy", "foreach_erf",
+    "gelu_quant", "eye", "cos", "deep_norm", "foreach_div_scalar", "foreach_sign", "angle_v2", "foreach_non_finite_check",
+    "sscal", "less_equal", "gelu_grad", "foreach_addcdiv_scalar", "gelu", "is_inf", "susum", "foreach_tanh", "lerp",
+    "matmul_leakyrelu", "feeds_repeat", "fill", "cast"
+  ];
+
+  function familyOf(name) {
+    if (name.startsWith("foreach_")) return "Foreach Elementwise";
+    if (/(mse_loss|cross_entropy|kl_div|gelu|norm|rms_norm|layer_norm|deep_norm|mul_sigmoid)/.test(name)) return "Training / Loss / Norm";
+    if (/(upsample|pool|motion_compensation|circular_pad|trilinear|bicubic|bilinear|nearest|dawn|bev_pool)/.test(name)) return "Vision / Spatial";
+    if (/(matmul|flash_attention|complex_mat_dot|reduce_scatter|all_reduce)/.test(name)) return "Matmul / Attention / Collective";
+    if (/(scatter|copy|cast|arange|lin_space|fill|tril|greater_equal|less_equal|is_inf|non_finite_check|eye|cos|trunc|lerp|angle|sscal|susum)/.test(name)) return "General Math / Utility";
+    return "Others";
+  }
+
+  function renderFamilyTable() {
+    const familyMap = {};
+    operators.forEach((name) => {
+      const family = familyOf(name);
+      if (!familyMap[family]) familyMap[family] = [];
+      familyMap[family].push(name);
+    });
+
+    const rows = Object.entries(familyMap)
+      .sort((a, b) => b[1].length - a[1].length)
+      .map(([family, names]) => {
+        const orderedNames = names.slice().sort((a, b) => a.localeCompare(b));
+        return `<tr>
+          <td>${family}</td>
+          <td class="has-text-centered">${orderedNames.length}</td>
+          <td>${orderedNames.join(", ")}</td>
+        </tr>`;
+      })
+      .join("");
+
+    document.getElementById("family-table-body").innerHTML = rows;
+  }
+
+  renderFamilyTable();
+</script>
 
 </body>
 </html>
