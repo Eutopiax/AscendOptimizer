@@ -167,17 +167,18 @@
       background: #fafbfd;
     }
 
-    .operator-list {
-      margin: 0.5rem 0 0;
-      padding-left: 1.1rem;
-      columns: 2;
-      column-gap: 1.5rem;
+    .operator-result-table {
+      margin-top: 0.6rem;
     }
 
-    .operator-list li {
-      break-inside: avoid;
-      margin-bottom: 0.25rem;
-      font-size: 0.92rem;
+    .operator-result-table th {
+      font-size: 0.82rem;
+      background: #f1f4f8 !important;
+      color: #334455 !important;
+    }
+
+    .operator-result-table td {
+      font-size: 0.88rem;
     }
     
     .keywords {
@@ -407,7 +408,15 @@
       </div>
       <div class="operator-panel">
         <p id="family-summary" class="has-text-weight-semibold"></p>
-        <ul id="operator-list" class="operator-list"></ul>
+        <table class="table is-fullwidth is-narrow is-striped operator-result-table">
+          <thead>
+            <tr>
+              <th>Operator</th>
+              <th class="has-text-centered">Speedup (x)</th>
+            </tr>
+          </thead>
+          <tbody id="operator-table-body"></tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -444,17 +453,74 @@
 
 <script>
   const operators = [
-    "mse_loss_grad_v2", "scatter_reduce", "foreach_zero_inplace", "matmul_reduce_scatter", "moc_init_routing_v2",
-    "non_finite_check", "motion_compensation", "dawn", "cross", "strideslice_neg_concat_v2", "foreach_sub_scalar",
-    "mse_loss_grad_v1", "scatter_list", "bev_pool", "foreach_pow_scalar_and_", "foreach_addcmul_scalar", "trunc",
-    "rms_norm_grad", "eye_fp64", "cross_entropy_loss", "upsample_bilinear2d_aa", "add_layer_norm_grad", "group_norm_swish",
-    "upsample_bilinear2d_aa_", "foreach_erfc", "upsample_bicubic2d_aa_", "circular_pad", "tril", "add_sigmoid_mul_reduce",
-    "upsample_bilinear2d_gra", "flash_attention_score_wi", "arange", "upsample_nearest_exact3", "upsample_trilinear3d_ba",
-    "add_rms_norm_dynamic_", "foreach_cos", "foreach_tan", "mul_sigmoid", "complex_mat_dot", "lin_space", "matmul_all_reduce",
-    "kl_div_target_backward", "adaptive_avg_pool3d_atg", "foreach_pow_scalar", "greater_equal", "copy", "foreach_erf",
-    "gelu_quant", "eye", "cos", "deep_norm", "foreach_div_scalar", "foreach_sign", "angle_v2", "foreach_non_finite_check",
-    "sscal", "less_equal", "gelu_grad", "foreach_addcdiv_scalar", "gelu", "is_inf", "susum", "foreach_tanh", "lerp",
-    "matmul_leakyrelu", "feeds_repeat", "fill", "cast"
+    { name: "mse_loss_grad_v2", speedup: 93.05 },
+    { name: "scatter_reduce", speedup: 24.97 },
+    { name: "foreach_zero_inplace", speedup: 20.80 },
+    { name: "matmul_reduce_scatter", speedup: 16.51 },
+    { name: "moc_init_routing_v2", speedup: 12.94 },
+    { name: "non_finite_check", speedup: 11.55 },
+    { name: "motion_compensation", speedup: 10.85 },
+    { name: "dawn", speedup: 10.68 },
+    { name: "cross", speedup: 7.75 },
+    { name: "strideslice_neg_concat_v2", speedup: 6.04 },
+    { name: "foreach_sub_scalar", speedup: 5.02 },
+    { name: "mse_loss_grad_v1", speedup: 2.66 },
+    { name: "scatter_list", speedup: 2.40 },
+    { name: "bev_pool", speedup: 2.17 },
+    { name: "foreach_pow_scalar_and_", speedup: 2.15 },
+    { name: "foreach_addcmul_scalar", speedup: 2.02 },
+    { name: "trunc", speedup: 1.81 },
+    { name: "rms_norm_grad", speedup: 1.72 },
+    { name: "eye_fp64", speedup: 1.55 },
+    { name: "cross_entropy_loss", speedup: 1.46 },
+    { name: "upsample_bilinear2d_aa", speedup: 1.42 },
+    { name: "add_layer_norm_grad", speedup: 1.39 },
+    { name: "group_norm_swish", speedup: 1.35 },
+    { name: "upsample_bilinear2d_aa_", speedup: 1.33 },
+    { name: "foreach_erfc", speedup: 1.29 },
+    { name: "upsample_bicubic2d_aa_", speedup: 1.26 },
+    { name: "circular_pad", speedup: 1.17 },
+    { name: "tril", speedup: 1.15 },
+    { name: "add_sigmoid_mul_reduce", speedup: 1.15 },
+    { name: "upsample_bilinear2d_gra", speedup: 1.12 },
+    { name: "flash_attention_score_wi", speedup: 1.12 },
+    { name: "arange", speedup: 1.11 },
+    { name: "upsample_nearest_exact3", speedup: 1.09 },
+    { name: "upsample_trilinear3d_ba", speedup: 1.09 },
+    { name: "add_rms_norm_dynamic_", speedup: 1.08 },
+    { name: "foreach_cos", speedup: 1.07 },
+    { name: "foreach_tan", speedup: 1.06 },
+    { name: "mul_sigmoid", speedup: 1.06 },
+    { name: "complex_mat_dot", speedup: 1.06 },
+    { name: "lin_space", speedup: 1.05 },
+    { name: "matmul_all_reduce", speedup: 1.05 },
+    { name: "kl_div_target_backward", speedup: 1.04 },
+    { name: "foreach_pow_scalar", speedup: 1.04 },
+    { name: "adaptive_avg_pool3d_atg", speedup: 1.03 },
+    { name: "greater_equal", speedup: 1.03 },
+    { name: "copy", speedup: 1.03 },
+    { name: "foreach_erf", speedup: 1.03 },
+    { name: "gelu_quant", speedup: 1.03 },
+    { name: "eye", speedup: 1.02 },
+    { name: "cos", speedup: 1.02 },
+    { name: "deep_norm", speedup: 1.02 },
+    { name: "foreach_div_scalar", speedup: 1.02 },
+    { name: "foreach_sign", speedup: 1.02 },
+    { name: "angle_v2", speedup: 1.02 },
+    { name: "foreach_non_finite_check", speedup: 1.02 },
+    { name: "sscal", speedup: 1.01 },
+    { name: "less_equal", speedup: 1.01 },
+    { name: "gelu_grad", speedup: 1.01 },
+    { name: "foreach_addcdiv_scalar", speedup: 1.01 },
+    { name: "gelu", speedup: 1.01 },
+    { name: "is_inf", speedup: 1.01 },
+    { name: "susum", speedup: 1.01 },
+    { name: "foreach_tanh", speedup: 1.01 },
+    { name: "lerp", speedup: 1.01 },
+    { name: "matmul_leakyrelu", speedup: 1.01 },
+    { name: "feeds_repeat", speedup: 1.01 },
+    { name: "fill", speedup: 1.01 },
+    { name: "cast", speedup: 1.01 }
   ];
 
   function familyOf(name) {
@@ -468,12 +534,14 @@
 
   function buildFamilyMap() {
     const familyMap = {};
-    operators.forEach((name) => {
-      const family = familyOf(name);
+    operators.forEach((op) => {
+      const family = familyOf(op.name);
       if (!familyMap[family]) familyMap[family] = [];
-      familyMap[family].push(name);
+      familyMap[family].push(op);
     });
-    Object.values(familyMap).forEach((names) => names.sort((a, b) => a.localeCompare(b)));
+    Object.values(familyMap).forEach((items) => {
+      items.sort((a, b) => b.speedup - a.speedup);
+    });
     return familyMap;
   }
 
@@ -482,17 +550,19 @@
     const families = Object.entries(familyMap).sort((a, b) => b[1].length - a[1].length);
     const select = document.getElementById("family-select");
     const summary = document.getElementById("family-summary");
-    const list = document.getElementById("operator-list");
+    const body = document.getElementById("operator-table-body");
 
     select.innerHTML = families
-      .map(([family, names]) => `<option value="${family}">${family} (${names.length})</option>`)
+      .map(([family, items]) => `<option value="${family}">${family} (${items.length})</option>`)
       .join("");
 
     function renderSelectedFamily() {
       const selected = select.value;
-      const names = familyMap[selected] || [];
-      summary.textContent = `${selected}: ${names.length} operators`;
-      list.innerHTML = names.map((name) => `<li>${name}</li>`).join("");
+      const items = familyMap[selected] || [];
+      summary.textContent = `${selected}: ${items.length} operators`;
+      body.innerHTML = items
+        .map((op) => `<tr><td>${op.name}</td><td class="has-text-centered">${op.speedup.toFixed(2)}</td></tr>`)
+        .join("");
     }
 
     select.addEventListener("change", renderSelectedFamily);
