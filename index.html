@@ -38,6 +38,20 @@
       font-size: 2.2rem !important;
       text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
+    .title-with-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .title-logo {
+      height: 58px;
+      width: auto;
+      display: block;
+    }
     
     .author-block {
       margin-right: 12px;
@@ -246,6 +260,10 @@
       .publication-title {
         font-size: 1.5rem !important;
       }
+
+      .title-logo {
+        height: 42px;
+      }
       
       .author-block {
         display: block;
@@ -265,7 +283,10 @@
 <section class="hero is-medium">
   <div class="hero-body">
     <div class="container has-text-centered">
-      <h1 class="title publication-title">AscendOptimizer</h1>
+      <h1 class="title publication-title title-with-logo">
+        <img class="title-logo" src="https://raw.githubusercontent.com/Eutopiax/AscendOptimizer/main/logo_name.png" alt="AscendOptimizer logo">
+        <span>AscendOptimizer</span>
+      </h1>
       <p class="subtitle is-5" style="color: rgba(255,255,255,0.9);">
         Episodic Agent for Ascend NPU Operator Optimization
       </p>
