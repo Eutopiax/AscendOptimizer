@@ -279,7 +279,6 @@
 </head>
 <body>
 
-<!-- Hero Section -->
 <section class="hero is-medium">
   <div class="hero-body">
     <div class="container has-text-centered">
@@ -291,7 +290,6 @@
         Episodic Agent for Ascend NPU Operator Optimization
       </p>
       
-      <!-- Authors -->
       <div class="mt-5">
         <span class="author-block"><a href="#">Jiehao Wu</a><sup>1,*</sup></span>
         <span class="author-block"><a href="#">Zixiao Huang</a><sup>1,*</sup></span>
@@ -300,7 +298,6 @@
         <span class="author-block"><a href="#">Xiangfeng Wang</a><sup>3,4,‡</sup></span>
       </div>
       
-      <!-- Affiliations -->
       <div class="affiliation mt-3">
         <sup>1</sup>East China Normal University &nbsp;·&nbsp;
         <sup>2</sup>Tongji University &nbsp;·&nbsp;
@@ -313,7 +310,6 @@
         <span><sup>‡</sup>Corresponding author</span>
       </div>
       
-      <!-- Links -->
       <div class="publication-links">
         <a href="https://arxiv.org/abs/" class="button is-light is-medium">
           <span class="icon"><i class="fas fa-file-pdf"></i></span>
@@ -328,7 +324,6 @@
   </div>
 </section>
 
-<!-- Abstract Section -->
 <section class="section">
   <div class="container">
     <h2 class="section-title">Abstract</h2>
@@ -340,10 +335,9 @@
         We present <strong>AscendOptimizer</strong>, an episodic agent that bootstraps this missing expertise by turning execution into experience. On the host side, AscendOptimizer performs profiling-in-the-loop evolutionary search to discover <em>valid</em> and <em>high-performing</em> tiling and data-movement configurations directly from hardware feedback. On the kernel side, it mines transferable optimization motifs by <em>rewinding</em> optimized kernels—systematically de-optimizing them to synthesize instructive "bad-to-good" trajectories—and distills these motifs into a retrievable experience bank for guided rewriting.
       </p>
       <p>
-        On a benchmark of <strong>133 real AscendC operators</strong>, AscendOptimizer achieves a <strong>1.34×</strong> geometric-mean speedup over the open-source baseline, with <strong>51.88%</strong> of operators outperforming their references, outperforming strong agent and search baselines.
+        On a benchmark of <strong>AscendC operators</strong>, AscendOptimizer achieves a <strong>-</strong> geometric-mean speedup over the open-source baseline, with <strong>-</strong> of operators outperforming their references, outperforming strong agent and search baselines.
       </p>
       
-      <!-- Keywords -->
       <div class="keywords">
         <span class="keyword-tag">Ascend NPU</span>
         <span class="keyword-tag">Operator Optimization</span>
@@ -355,7 +349,6 @@
   </div>
 </section>
 
-<!-- Method Section -->
 <section class="section">
   <div class="container">
     <h2 class="section-title">Method</h2>
@@ -386,13 +379,12 @@
   </div>
 </section>
 
-<!-- Performance Section -->
 <section class="section">
   <div class="container">
     <h2 class="section-title">Main Results</h2>
     <div class="content">
       <p class="mb-4">
-        AscendOptimizer outperforms all baselines on <strong>133 AscendC operators</strong> across every metric, achieving a geometric-mean speedup of <strong>1.34×</strong> on Ascend 910B4.
+        AscendOptimizer outperforms all baselines on <strong>AscendC operators</strong> across every metric, achieving a geometric-mean speedup of <strong>-</strong> on Ascend 910B4.
       </p>
       
       <table class="table is-fullwidth performance-table is-narrow">
@@ -410,26 +402,26 @@
           <tr>
             <td>Best-of-N</td>
             <td>BoN@40</td>
-            <td class="has-text-centered">1.05</td>
-            <td class="has-text-centered">18.05%</td>
-            <td class="has-text-centered">6.77%</td>
-            <td class="has-text-centered">1.50%</td>
+            <td class="has-text-centered">-</td>
+            <td class="has-text-centered">-</td>
+            <td class="has-text-centered">-</td>
+            <td class="has-text-centered">-</td>
           </tr>
           <tr>
             <td>Agent/Search</td>
             <td>OpenEvolve</td>
-            <td class="has-text-centered">1.10</td>
-            <td class="has-text-centered">27.07%</td>
-            <td class="has-text-centered">7.52%</td>
-            <td class="has-text-centered">4.51%</td>
+            <td class="has-text-centered">-</td>
+            <td class="has-text-centered">-</td>
+            <td class="has-text-centered">-</td>
+            <td class="has-text-centered">-</td>
           </tr>
           <tr class="is-selected">
             <td><strong>Ours</strong></td>
             <td><strong>AscendOptimizer</strong></td>
-            <td class="has-text-centered highlight">1.34</td>
-            <td class="has-text-centered highlight">51.88%</td>
-            <td class="has-text-centered highlight">19.55%</td>
-            <td class="has-text-centered highlight">12.03%</td>
+            <td class="has-text-centered highlight">-</td>
+            <td class="has-text-centered highlight">-</td>
+            <td class="has-text-centered highlight">-</td>
+            <td class="has-text-centered highlight">-</td>
           </tr>
         </tbody>
       </table>
@@ -462,7 +454,6 @@
   </div>
 </section>
 
-<!-- Citation Section -->
 <section class="section">
   <div class="container">
     <h2 class="section-title">Citation</h2>
@@ -479,7 +470,6 @@
   </div>
 </section>
 
-<!-- Footer -->
 <footer class="footer">
   <div class="content has-text-centered">
     <p>
@@ -492,76 +482,8 @@
 </footer>
 
 <script>
-  const operators = [
-    { name: "mse_loss_grad_v2", speedup: 93.05 },
-    { name: "scatter_reduce", speedup: 24.97 },
-    { name: "foreach_zero_inplace", speedup: 20.80 },
-    { name: "matmul_reduce_scatter", speedup: 16.51 },
-    { name: "moc_init_routing_v2", speedup: 12.94 },
-    { name: "non_finite_check", speedup: 11.55 },
-    { name: "motion_compensation", speedup: 10.85 },
-    { name: "dawn", speedup: 10.68 },
-    { name: "cross", speedup: 7.75 },
-    { name: "strideslice_neg_concat_v2", speedup: 6.04 },
-    { name: "foreach_sub_scalar", speedup: 5.02 },
-    { name: "mse_loss_grad_v1", speedup: 2.66 },
-    { name: "scatter_list", speedup: 2.40 },
-    { name: "bev_pool", speedup: 2.17 },
-    { name: "foreach_pow_scalar_and_", speedup: 2.15 },
-    { name: "foreach_addcmul_scalar", speedup: 2.02 },
-    { name: "trunc", speedup: 1.81 },
-    { name: "rms_norm_grad", speedup: 1.72 },
-    { name: "eye_fp64", speedup: 1.55 },
-    { name: "cross_entropy_loss", speedup: 1.46 },
-    { name: "upsample_bilinear2d_aa", speedup: 1.42 },
-    { name: "add_layer_norm_grad", speedup: 1.39 },
-    { name: "group_norm_swish", speedup: 1.35 },
-    { name: "upsample_bilinear2d_aa_", speedup: 1.33 },
-    { name: "foreach_erfc", speedup: 1.29 },
-    { name: "upsample_bicubic2d_aa_", speedup: 1.26 },
-    { name: "circular_pad", speedup: 1.17 },
-    { name: "tril", speedup: 1.15 },
-    { name: "add_sigmoid_mul_reduce", speedup: 1.15 },
-    { name: "upsample_bilinear2d_gra", speedup: 1.12 },
-    { name: "flash_attention_score_wi", speedup: 1.12 },
-    { name: "arange", speedup: 1.11 },
-    { name: "upsample_nearest_exact3", speedup: 1.09 },
-    { name: "upsample_trilinear3d_ba", speedup: 1.09 },
-    { name: "add_rms_norm_dynamic_", speedup: 1.08 },
-    { name: "foreach_cos", speedup: 1.07 },
-    { name: "foreach_tan", speedup: 1.06 },
-    { name: "mul_sigmoid", speedup: 1.06 },
-    { name: "complex_mat_dot", speedup: 1.06 },
-    { name: "lin_space", speedup: 1.05 },
-    { name: "matmul_all_reduce", speedup: 1.05 },
-    { name: "kl_div_target_backward", speedup: 1.04 },
-    { name: "foreach_pow_scalar", speedup: 1.04 },
-    { name: "adaptive_avg_pool3d_atg", speedup: 1.03 },
-    { name: "greater_equal", speedup: 1.03 },
-    { name: "copy", speedup: 1.03 },
-    { name: "foreach_erf", speedup: 1.03 },
-    { name: "gelu_quant", speedup: 1.03 },
-    { name: "eye", speedup: 1.02 },
-    { name: "cos", speedup: 1.02 },
-    { name: "deep_norm", speedup: 1.02 },
-    { name: "foreach_div_scalar", speedup: 1.02 },
-    { name: "foreach_sign", speedup: 1.02 },
-    { name: "angle_v2", speedup: 1.02 },
-    { name: "foreach_non_finite_check", speedup: 1.02 },
-    { name: "sscal", speedup: 1.01 },
-    { name: "less_equal", speedup: 1.01 },
-    { name: "gelu_grad", speedup: 1.01 },
-    { name: "foreach_addcdiv_scalar", speedup: 1.01 },
-    { name: "gelu", speedup: 1.01 },
-    { name: "is_inf", speedup: 1.01 },
-    { name: "susum", speedup: 1.01 },
-    { name: "foreach_tanh", speedup: 1.01 },
-    { name: "lerp", speedup: 1.01 },
-    { name: "matmul_leakyrelu", speedup: 1.01 },
-    { name: "feeds_repeat", speedup: 1.01 },
-    { name: "fill", speedup: 1.01 },
-    { name: "cast", speedup: 1.01 }
-  ];
+  // 具体操作符结果已清空
+  const operators = [];
 
   function familyOf(name) {
     if (name.startsWith("foreach_")) return "Foreach Elementwise";
@@ -591,6 +513,13 @@
     const select = document.getElementById("family-select");
     const summary = document.getElementById("family-summary");
     const body = document.getElementById("operator-table-body");
+
+    if (families.length === 0) {
+      select.innerHTML = `<option value="">Results TBD</option>`;
+      summary.textContent = `Pending evaluation...`;
+      body.innerHTML = `<tr><td colspan="2" class="has-text-centered">Data currently unavailable</td></tr>`;
+      return;
+    }
 
     select.innerHTML = families
       .map(([family, items]) => `<option value="${family}">${family} (${items.length})</option>`)
